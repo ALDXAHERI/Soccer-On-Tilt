@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GoalDetection : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        
+        if (other.CompareTag("Ball"))
+        {
+            Rigidbody2D ballRb = other.GetComponent<Rigidbody2D>();
+            ballRb.velocity = Vector2.zero;
+            ballRb.angularVelocity = 0;
+
+            Invoke(nameof(ResetScene), 3f);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void ResetScene()
     {
-        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
