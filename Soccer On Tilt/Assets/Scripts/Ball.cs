@@ -4,47 +4,42 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public float bounceForce = 10f;
     private Rigidbody2D rb;
+    public float bounceForce = 5f;
 
-    private Vector3 startPosition;
+    private Vector3 ballStartPos;
+    public Transform playerOne;
+    public Transform playerTwo;
+    private Vector3 playerOneStartPos;
+    private Vector3 playerTwoStartPos;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        startPosition = transform.position;
+        ballStartPos = transform.position;
+        playerOneStartPos = playerOne.position;
+        playerTwoStartPos = playerTwo.position;
         StartBouncing();
     }
 
     void StartBouncing()
     {
-        rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            rb.velocity = Vector2.zero;
-            rb.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
-        }
+        rb.velocity = Vector2.up * bounceForce;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.name == "outOfBoundPreventLeft" || 
-            other.gameObject.name == "outOfBoundPreventRight")
+        if (other.CompareTag("Goal"))
         {
-            ResetBallPosition();
+            ResetGame();
         }
     }
 
-    void ResetBallPosition()
+    void ResetGame()
     {
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0;
-        transform.position = startPosition;
-
-        Invoke(nameof(StartBouncing), 0.5f);
+        transform.position = ballStartPos;
+        playerOne.position = playerOneStartPos;
+        playerTwo.position = playerTwoStartPos;
+        StartBouncing();
     }
 }
