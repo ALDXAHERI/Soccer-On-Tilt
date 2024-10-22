@@ -31,12 +31,19 @@ public class Ball : MonoBehaviour
     {
         if (other.CompareTag("Goal"))
         {
-            ResetGame();
+            Invoke(nameof(StopBall), 0.2f);
+            Invoke(nameof(ResetGame), 0.5f);
         }
+    }
+
+    void StopBall()
+    {
+        rb.bodyType = RigidbodyType2D.Static;
     }
 
     void ResetGame()
     {
+        rb.bodyType = RigidbodyType2D.Dynamic;
         transform.position = ballStartPos;
         playerOne.position = playerOneStartPos;
         playerTwo.position = playerTwoStartPos;
