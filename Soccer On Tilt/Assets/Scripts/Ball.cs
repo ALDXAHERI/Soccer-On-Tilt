@@ -1,11 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
     private Rigidbody2D rb;
     public float bounceForce = 5f;
+    public GameManager gameManager;
 
     private Vector3 ballStartPos;
     public Transform playerOne;
@@ -24,6 +23,7 @@ public class Ball : MonoBehaviour
 
     void StartBouncing()
     {
+        if (Time.timeScale == 0f || gameManager == null) return;
         rb.velocity = Vector2.up * bounceForce;
     }
 
@@ -31,6 +31,7 @@ public class Ball : MonoBehaviour
     {
         if (other.CompareTag("Goal"))
         {
+            gameManager.UpdateScore(other.gameObject.name);
             Invoke(nameof(StopBall), 0.2f);
             Invoke(nameof(ResetGame), 0.5f);
         }
@@ -43,6 +44,7 @@ public class Ball : MonoBehaviour
 
     void ResetGame()
     {
+        if (Time.timeScale == 0f) return;
         rb.bodyType = RigidbodyType2D.Dynamic;
         transform.position = ballStartPos;
         playerOne.position = playerOneStartPos;
