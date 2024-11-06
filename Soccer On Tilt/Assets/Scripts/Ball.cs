@@ -41,7 +41,7 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            gameManager.PlayHitSound();  // Play hit sound when player hits the ball
+            gameManager.PlayHitSound();
         }
     }
 
