@@ -37,6 +37,14 @@ public class Ball : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            gameManager.PlayHitSound();  // Play hit sound when player hits the ball
+        }
+    }
+
     void StopBall()
     {
         rb.bodyType = RigidbodyType2D.Static;

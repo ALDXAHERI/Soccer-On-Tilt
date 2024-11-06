@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -9,11 +7,14 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded;
 
     private Rigidbody2D rb;
+    private AudioSource moveSoundSource;
     public bool isPlayerOne;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        moveSoundSource = GetComponent<AudioSource>();
+        moveSoundSource.volume = 0.65f;
     }
 
     void Update()
@@ -36,6 +37,15 @@ public class PlayerMovement : MonoBehaviour
 
         rb.velocity = new Vector2(move * moveSpeed, rb.velocity.y);
 
+        if (move != 0 && !moveSoundSource.isPlaying)
+        {
+            moveSoundSource.Play();
+        }
+        else if (move == 0 && moveSoundSource.isPlaying)
+        {
+            moveSoundSource.Stop();
+        }
+
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
@@ -49,6 +59,15 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow)) move = 1;
 
         rb.velocity = new Vector2(move * moveSpeed, rb.velocity.y);
+
+        if (move != 0 && !moveSoundSource.isPlaying)
+        {
+            moveSoundSource.Play();
+        }
+        else if (move == 0 && moveSoundSource.isPlaying)
+        {
+            moveSoundSource.Stop();
+        }
 
         if (Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
         {

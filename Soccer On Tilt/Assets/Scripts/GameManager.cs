@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class GameManager : MonoBehaviour
     public GameObject endGamePanel;
     public GameObject goldenGoalText;
     public TextMeshProUGUI gameOverText;
+
+    public AudioSource hitSoundSource;
+    public AudioSource goalSoundSource;
 
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
@@ -63,12 +67,14 @@ public class GameManager : MonoBehaviour
         {
             playerTwoScore++;
             playerTwoScoreText.text = $"Player Two: {playerTwoScore}";
+            StartCoroutine(PlayPartialGoalSound());
             if (playerTwoScore >= winningScore) EndGame("Player 2");
         }
         else if (goalName == "playerTwoGoal")
         {
             playerOneScore++;
             playerOneScoreText.text = $"Player One: {playerOneScore}";
+            StartCoroutine(PlayPartialGoalSound());
             if (playerOneScore >= winningScore) EndGame("Player 1");
         }
 
@@ -113,4 +119,21 @@ public class GameManager : MonoBehaviour
         playerOneScoreText.text = $"Player One: {playerOneScore}";
         playerTwoScoreText.text = $"Player Two: {playerTwoScore}";
     }
+
+
+    private IEnumerator PlayPartialGoalSound()
+    {
+        goalSoundSource.Play();
+        yield return new WaitForSeconds(1f);
+        goalSoundSource.Stop();
+    }
+
+    public void PlayHitSound()
+    {
+        if (hitSoundSource != null) 
+        {
+            hitSoundSource.Play();
+        }
+    }
+
 }
